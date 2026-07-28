@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="pastel">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora Rosada 💖 | Pink Aesthetic Calculator</title>
+  <meta name="description" content="Una hermosa y moderna calculadora estética en tonos rosa con modo científico, historial, conversor de unidades y sonidos interactivos.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Script (Deferred load) -->
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <!-- Floating background bokeh shapes -->
+  <div class="bg-shape shape-1"></div>
+  <div class="bg-shape shape-2"></div>
+  <div class="bg-shape shape-3"></div>
+
+  <main class="app-container">
+    <!-- Main Glass Card -->
+    <div class="calculator-card">
+      
+      <!-- Top Navigation & Controls Bar -->
+      <header class="top-bar">
+        <div class="branding">
+          <span class="icon">✨</span>
+          <span class="title">Pink Calc</span>
+        </div>
+        
+        <div class="actions">
+          <!-- Sound Toggle -->
+          <button type="button" id="soundToggleBtn" class="icon-btn" title="Activar/Desactivar Sonido" aria-label="Toggle Sonido" onclick="window.toggleSound()">
+            <span class="sound-icon">🔊</span>
+          </button>
+
+          <!-- Theme Selector Dropdown -->
+          <div class="theme-selector-wrapper">
+            <button type="button" id="themeDropdownBtn" class="icon-btn" title="Cambiar Tema Rosado" aria-label="Seleccionar Tema" onclick="window.toggleThemeMenu(event)">
+              <span>🎨</span>
+            </button>
+            <div id="themeMenu" class="theme-menu hidden">
+              <button type="button" class="theme-opt active" data-theme="pastel" onclick="window.selectTheme('pastel')">🌸 Rosa Pastel</button>
+              <button type="button" class="theme-opt" data-theme="rosegold" onclick="window.selectTheme('rosegold')">✨ Rose Gold</button>
+              <button type="button" class="theme-opt" data-theme="neon" onclick="window.selectTheme('neon')">💖 Neón Pink</button>
+              <button type="button" class="theme-opt" data-theme="darkrose" onclick="window.selectTheme('darkrose')">🌙 Dark Rose</button>
+            </div>
+          </div>
+
+          <!-- History Drawer Toggle -->
+          <button type="button" id="historyToggleBtn" class="icon-btn" title="Ver Historial" aria-label="Abrir Historial" onclick="window.toggleHistory(true)">
+            <span>📜</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Mode Switcher Tabs -->
+      <nav class="mode-tabs" role="tablist">
+        <button type="button" class="tab-btn active" data-tab="standard" role="tab" aria-selected="true" onclick="window.switchTab('standard')">Estándar</button>
+        <button type="button" class="tab-btn" data-tab="scientific" role="tab" aria-selected="false" onclick="window.switchTab('scientific')">Científica</button>
+        <button type="button" class="tab-btn" data-tab="converter" role="tab" aria-selected="false" onclick="window.switchTab('converter')">Conversor</button>
+      </nav>
+
+      <!-- Calculator Display Screen -->
+      <section class="display-section">
+        <div id="expressionDisplay" class="expression-display"></div>
+        <div class="main-display-row">
+          <div id="mainDisplay" class="main-display" tabindex="0">0</div>
+          <button type="button" id="copyBtn" class="copy-btn" title="Copiar Resultado" aria-label="Copiar resultado" onclick="window.copyResult()">
+            📋
+          </button>
+        </div>
+      </section>
+
+      <!-- STANDARD & SCIENTIFIC KEYPAD CONTAINER -->
+      <section id="keypadSection" class="keypad-section">
+        <!-- Scientific Panel (Toggled via mode tabs) -->
+        <div id="scientificPanel" class="scientific-panel hidden">
+          <button type="button" class="key scientific" data-action="sin" onclick="window.pressAction('sin')">sin</button>
+          <button type="button" class="key scientific" data-action="cos" onclick="window.pressAction('cos')">cos</button>
+          <button type="button" class="key scientific" data-action="tan" onclick="window.pressAction('tan')">tan</button>
+          <button type="button" class="key scientific" data-action="deg-rad" id="degRadBtn" onclick="window.pressAction('deg-rad')">DEG</button>
+
+          <button type="button" class="key scientific" data-action="log" onclick="window.pressAction('log')">log</button>
+          <button type="button" class="key scientific" data-action="ln" onclick="window.pressAction('ln')">ln</button>
+          <button type="button" class="key scientific" data-action="sqrt" onclick="window.pressAction('sqrt')">√x</button>
+          <button type="button" class="key scientific" data-action="pow" onclick="window.pressAction('pow')">xʸ</button>
+
+          <button type="button" class="key scientific" data-action="pi" onclick="window.pressAction('pi')">π</button>
+          <button type="button" class="key scientific" data-action="e" onclick="window.pressAction('e')">e</button>
+          <button type="button" class="key scientific" data-action="fact" onclick="window.pressAction('fact')">n!</button>
+          <button type="button" class="key scientific" data-action="bracket-open" onclick="window.pressAction('bracket-open')">(</button>
+          <button type="button" class="key scientific" data-action="bracket-close" onclick="window.pressAction('bracket-close')">)</button>
+        </div>
+
+        <!-- Main Standard Keypad -->
+        <div class="standard-grid">
+          <button type="button" class="key action" data-action="clear-all" onclick="window.pressAction('clear-all')">AC</button>
+          <button type="button" class="key action" data-action="delete" onclick="window.pressAction('delete')">⌫</button>
+          <button type="button" class="key action" data-action="percent" onclick="window.pressAction('percent')">%</button>
+          <button type="button" class="key operator" data-value="/" onclick="window.pressOperator('/')">÷</button>
+
+          <button type="button" class="key number" data-value="7" onclick="window.pressValue('7')">7</button>
+          <button type="button" class="key number" data-value="8" onclick="window.pressValue('8')">8</button>
+          <button type="button" class="key number" data-value="9" onclick="window.pressValue('9')">9</button>
+          <button type="button" class="key operator" data-value="*" onclick="window.pressOperator('*')">×</button>
+
+          <button type="button" class="key number" data-value="4" onclick="window.pressValue('4')">4</button>
+          <button type="button" class="key number" data-value="5" onclick="window.pressValue('5')">5</button>
+          <button type="button" class="key number" data-value="6" onclick="window.pressValue('6')">6</button>
+          <button type="button" class="key operator" data-value="-" onclick="window.pressOperator('-')">−</button>
+
+          <button type="button" class="key number" data-value="1" onclick="window.pressValue('1')">1</button>
+          <button type="button" class="key number" data-value="2" onclick="window.pressValue('2')">2</button>
+          <button type="button" class="key number" data-value="3" onclick="window.pressValue('3')">3</button>
+          <button type="button" class="key operator" data-value="+" onclick="window.pressOperator('+')">+</button>
+
+          <button type="button" class="key action" data-action="plus-minus" onclick="window.pressAction('plus-minus')">±</button>
+          <button type="button" class="key number" data-value="0" onclick="window.pressValue('0')">0</button>
+          <button type="button" class="key number" data-value="." onclick="window.pressValue('.')">.</button>
+          <button type="button" class="key equals" data-action="calculate" onclick="window.pressAction('calculate')">=</button>
+        </div>
+      </section>
+
+      <!-- UNIT CONVERTER SECTION -->
+      <section id="converterSection" class="converter-section hidden">
+        <div class="converter-header">
+          <label for="converterCategory">Categoría:</label>
+          <select id="converterCategory" class="custom-select">
+            <option value="length">📏 Longitud</option>
+            <option value="weight">⚖️ Peso</option>
+            <option value="temperature">🌡️ Temperatura</option>
+            <option value="digital">💻 Datos</option>
+          </select>
+        </div>
+
+        <div class="converter-body">
+          <div class="converter-row">
+            <input type="number" id="converterInputVal" value="1" placeholder="0" class="conv-input">
+            <select id="converterFromUnit" class="custom-select"></select>
+          </div>
+
+          <div class="converter-swap-row">
+            <button type="button" id="converterSwapBtn" class="swap-btn" title="Intercambiar unidades" onclick="window.swapUnits()">🔄</button>
+          </div>
+
+          <div class="converter-row">
+            <div id="converterOutputVal" class="conv-output">0</div>
+            <select id="converterToUnit" class="custom-select"></select>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- History Drawer Overlay -->
+    <aside id="historyDrawer" class="history-drawer">
+      <div class="drawer-header">
+        <h3>📜 Historial</h3>
+        <button type="button" id="closeHistoryBtn" class="close-btn" aria-label="Cerrar Historial" onclick="window.toggleHistory(false)">×</button>
+      </div>
+      <div id="historyList" class="history-list">
+        <div class="empty-history">No hay cálculos aún 🌸</div>
+      </div>
+      <div class="drawer-footer">
+        <button type="button" id="clearHistoryBtn" class="clear-hist-btn" onclick="window.clearHistory()">Limpiar Historial</button>
+      </div>
+    </aside>
+    <div id="drawerOverlay" class="drawer-overlay" onclick="window.toggleHistory(false)"></div>
+
+    <!-- Toast Notification -->
+    <div id="toastNotification" class="toast hidden">
+      <span class="toast-icon">💖</span>
+      <span id="toastMsg">¡Copiado con éxito!</span>
+    </div>
+  </main>
+</body>
+</html>
